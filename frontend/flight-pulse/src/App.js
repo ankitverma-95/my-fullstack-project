@@ -1,23 +1,52 @@
-import logo from './logo.svg';
+import { useEffect, useState } from 'react';
 import './App.css';
+import { requestFCMToken, unsubscribeFromFCM } from './firebaseutils';
 
 function App() {
+
+  const [fcmToken, setFcmToken] = useState(null);
+
+  useEffect(() => {
+    const fetchFCMToken = async () => {
+      try {
+        const token = await requestFCMToken();
+        setFcmToken(token);
+        console.log('FCM Token:', token);
+      } catch (err) {
+        console.log('Error getting FCM token', err);
+      }
+    };
+
+    const refreshFCMToken = async () => {
+      try {
+        await unsubscribeFromFCM();
+        setFcmToken(null); // Reset the token state after unsubscribing
+      } catch (err) {
+        console.log('Error unsubscribing from FCM:', err);
+      }
+    };
+
+    if (fcmToken) {
+      // Optionally perform actions if there is already an FCM token
+      console.log('FCM Token already exists:', fcmToken);
+      refreshFCMToken();
+    } 
+
+    // Cleanup function to unsubscribe from FCM when the component unmounts
+    return () => {
+      fetchFCMToken();
+      // refreshFCMToken();
+    };
+  }, []); // Dependency array includes fcmToken
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>FCM Token Management</h1>
+      {fcmToken ? (
+        <p>FCM Token: {fcmToken}</p>
+      ) : (
+        <p>Fetching FCM Token...</p>
+      )}
     </div>
   );
 }
