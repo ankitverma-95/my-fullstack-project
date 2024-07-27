@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import { requestFCMToken, unsubscribeFromFCM } from './firebaseutils';
+import { messaging, requestFCMToken, unsubscribeFromFCM } from './firebaseutils';
+import { onMessage } from 'firebase/messaging';
 
 function App() {
 
@@ -17,25 +18,11 @@ function App() {
       }
     };
 
-    const refreshFCMToken = async () => {
-      try {
-        await unsubscribeFromFCM();
-        setFcmToken(null); // Reset the token state after unsubscribing
-      } catch (err) {
-        console.log('Error unsubscribing from FCM:', err);
-      }
-    };
-
-    if (fcmToken) {
-      // Optionally perform actions if there is already an FCM token
-      console.log('FCM Token already exists:', fcmToken);
-      refreshFCMToken();
-    } 
-
-    // Cleanup function to unsubscribe from FCM when the component unmounts
     return () => {
       fetchFCMToken();
-      // refreshFCMToken();
+      onMessage(messaging, (payload) => {
+        console.log('Message received. ', payload);
+      })
     };
   }, []); // Dependency array includes fcmToken
 

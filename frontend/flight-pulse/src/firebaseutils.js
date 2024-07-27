@@ -16,7 +16,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 // Initialize Firebase Cloud Messaging and get a reference to the service
-const messaging = getMessaging(app);
+export const messaging = getMessaging(app);
 
 
 export async function requestFCMToken() {
