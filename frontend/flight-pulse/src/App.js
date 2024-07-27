@@ -1,23 +1,39 @@
-import logo from './logo.svg';
+import { useEffect, useState } from 'react';
 import './App.css';
+import { messaging, requestFCMToken, unsubscribeFromFCM } from './firebaseutils';
+import { onMessage } from 'firebase/messaging';
 
 function App() {
+
+  const [fcmToken, setFcmToken] = useState(null);
+
+  useEffect(() => {
+    const fetchFCMToken = async () => {
+      try {
+        const token = await requestFCMToken();
+        setFcmToken(token);
+        console.log('FCM Token:', token);
+      } catch (err) {
+        console.log('Error getting FCM token', err);
+      }
+    };
+
+    return () => {
+      fetchFCMToken();
+      onMessage(messaging, (payload) => {
+        console.log('Message received. ', payload);
+      })
+    };
+  }, []); // Dependency array includes fcmToken
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>FCM Token Management</h1>
+      {fcmToken ? (
+        <p>FCM Token: {fcmToken}</p>
+      ) : (
+        <p>Fetching FCM Token...</p>
+      )}
     </div>
   );
 }
