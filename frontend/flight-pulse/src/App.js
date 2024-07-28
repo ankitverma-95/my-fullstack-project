@@ -11,12 +11,27 @@ import MarkerClusterGroup from "react-leaflet-cluster";
 import { Icon, divIcon, point } from "leaflet";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import CircleNotificationsIcon from '@mui/icons-material/CircleNotifications';
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import CircleNotificationsIcon from "@mui/icons-material/CircleNotifications";
 
 function App() {
+  const [status, setStatus] = useState("");
   const [fcmToken, setFcmToken] = useState(null);
-  const [markers, setMarkers] = useState([]);
+  const [markers, setMarkers] = useState([
+    {
+      geocode: [48.86, 2.3522],
+      popUp: "Hello, I am pop up 1",
+    },
+    {
+      geocode: [48.85, 2.3522],
+      popUp: "Hello, I am pop up 2",
+    },
+    {
+      geocode: [48.855, 2.34],
+      popUp: "Hello, I am pop up 3",
+    },
+  ]);
+  const [showNotification, setNotification] = useState(false);
 
   useEffect(() => {
     const fetchFCMToken = async () => {
@@ -29,7 +44,18 @@ function App() {
       }
     };
 
+    const fetchAllFlight = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/flights?page=0`);
+        const flights = await response.json();
+        traveseList(flights);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
     return () => {
+      fetchAllFlight();
       // fetchFCMToken();
       // onMessage(messaging, (payload) => {
       // console.log('Message received. ', payload);
@@ -37,9 +63,20 @@ function App() {
     };
   }, []); // Dependency array includes fcmToken
 
+  const traveseList = (flights) => {
+    let list = [];
+    flights.forEach((flight) => {
+      list.push({
+        geocode: [flight.currentlatitude, flight.currentlongitude],
+        popUp: flight.flightNumber,
+      });
+    });
+    setMarkers(list);
+  }
+
   const customIcon = new Icon({
     iconUrl: require("./plane-icon.png"),
-    iconSize: [16, 16] // size of the icon
+    iconSize: [16, 16], // size of the icon
   });
 
   const createClusterCustomIcon = function (cluster) {
@@ -50,14 +87,15 @@ function App() {
     });
   };
 
-  
   const handleFlightStatusList = (flightStatus) => {
     console.log(flightStatus);
-  }
+    traveseList(flightStatus.flights);
+    setStatus(flightStatus.name);
+  };
 
-  const showNotification = () => {
-    
-  }
+  const onNotificationChange = () => {
+    setNotification(!showNotification);
+  };
 
   return (
     // <div>
@@ -69,38 +107,41 @@ function App() {
     //   )}
     // </div>
     <>
-      <Header/>
+      <Header />
       <div id="section-container">
-        <Sidebar onFlightStatus={this.handleFlightStatusList}/>
+        <Sidebar onFlightStatus={handleFlightStatusList} />
         <div className="map-section">
           <div className="map-container">
-            <span id="flight-status-heading">Flight Status</span>
-            <MapContainer center={[48.8566, 2.3522]} zoom={13}>
+            <span id="flight-status-heading">{status} Status</span>
+            <MapContainer center={[20.5937, 78.9629]} zoom={4}>
               <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-              <MarkerClusterGroup
+              {/* <MarkerClusterGroup
                 chunkedLoading
                 iconCreateFunction={createClusterCustomIcon}
-              >
-                 {markers.map((marker) => (
-                    <Marker position={marker.geocode} icon={customIcon}>
-                      <Popup>{marker.popUp}</Popup>
-                    </Marker>
-                  ))}
-              </MarkerClusterGroup>
+              > */}
+              {markers.map((marker) => (
+                <Marker position={marker.geocode} icon={customIcon}>
+                  <Popup>{marker.popUp}</Popup>
+                </Marker>
+              ))}
+              {/* </MarkerClusterGroup> */}
             </MapContainer>
           </div>
           <div id="notification-section">
-            <div id="notification-icon-container" onClick={this.showNotification}>
-              <NotificationsIcon id="notification-icon"/>
+            <div
+              id="notification-icon-container"
+              onClick={onNotificationChange}
+            >
+              <NotificationsIcon id="notification-icon" />
             </div>
           </div>
         </div>
       </div>
 
-      <div id='hide'>
+      <div style={{ display: showNotification ? "block" : "none" }}>
         <div id="notification-list">
           <div class="notification-list-item">
             <div class="row">
@@ -111,7 +152,9 @@ function App() {
               <span id="route">3234233</span>
             </div>
             <div class="row">
-              <span id="date"><span id="depart-date">Departure Date:</span>30-2-2024</span>
+              <span id="date">
+                <span id="depart-date">Departure Date:</span>30-2-2024
+              </span>
             </div>
           </div>
           <div class="notification-list-item">
@@ -123,7 +166,9 @@ function App() {
               <span id="route">3234233</span>
             </div>
             <div class="row">
-              <span id="date"><span id="depart-date">Departure Date:</span>30-2-2024</span>
+              <span id="date">
+                <span id="depart-date">Departure Date:</span>30-2-2024
+              </span>
             </div>
           </div>
         </div>
