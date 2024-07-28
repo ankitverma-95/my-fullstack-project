@@ -13,10 +13,10 @@ import Header from "./Header";
 import Sidebar from "./Sidebar";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import indigo from "./indigo.png";
+import { onMessage } from "firebase/messaging";
 
 function App() {
-  const [status, setStatus] = useState("");
-  const [fcmToken, setFcmToken] = useState(null);
+  const [status, setStatus] = useState("All Flight");
   const [markers, setMarkers] = useState([
     {
       geocode: [48.86, 2.3522],
@@ -32,13 +32,14 @@ function App() {
     },
   ]);
   const [showNotification, setNotification] = useState(false);
+  const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
     const fetchFCMToken = async () => {
       try {
         const token = await requestFCMToken();
-        setFcmToken(token);
-        console.log("FCM Token:", token);
+        // setFcmToken(token);
+        fcmTokenRegister(token);
       } catch (err) {
         console.log("Error getting FCM token", err);
       }
@@ -54,15 +55,37 @@ function App() {
       }
     };
 
+    const fcmTokenRegister = async (fcmToken) => {
+      try {
+          await fetch("http://localhost:8080/token/fcm/register", {
+            method: 'post',
+            headers: { "Content-type": "application/json; charset=UTF-8"},
+            body: JSON.stringify({
+              userId: (Math.random() + 1).toString(36).substring(7),
+              token: fcmToken,
+            })
+           })
+      } catch(err) {
+        console.log(err)
+      }
+    }
+
     return () => {
+      fetchFCMToken();
       fetchAllFlight();
-      // fetchFCMToken();
-      // onMessage(messaging, (payload) => {
-      // console.log('Message received. ', payload);
-      // })
+      onMessage(messaging, (payload) => {
+        setNotification(true);
+        setNotifications([...notifications, {
+          flightNumber: payload.notification.body,
+          flightStatus: payload.notification.title,
+          route: payload.data.origin+" "+payload.data.destination,
+          departureDate: payload.data.Departure
+        }]);
+      })
     };
   }, []); // Dependency array includes fcmToken
 
+  console.log(notifications);
   const traveseList = (flights) => {
     let list = [];
     flights.forEach((flight) => {
@@ -101,14 +124,6 @@ function App() {
   };
 
   return (
-    // <div>
-    //   <h1>FCM Token Management</h1>
-    //   {fcmToken ? (
-    //     <p>FCM Token: {fcmToken}</p>
-    //   ) : (
-    //     <p>Fetching FCM Token...</p>
-    //   )}
-    // </div>
     <>
       <Header />
       <div id="section-container">
@@ -167,34 +182,27 @@ function App() {
 
       <div style={{ display: showNotification ? "block" : "none" }}>
         <div id="notification-list">
-          <div class="notification-list-item">
-            <div class="row">
-              <span id="flight-number">3234233</span>
-              <span id="flight-status">Delayed</span>
+          {notifications.map((notification)=> (
+            <div class="notification-list-item">
+              <div>
+                <img src={indigo}/>
+              </div>
+              <div id="desc-container">
+                <div class="row">
+                  <span id="flight-number">{notification.flightNumber}</span>
+                  <span id="flight-status">{notification.flightStatus}</span>
+                </div>
+                <div class="row">
+                  <span id="route">{notification.route}</span>
+                </div>
+                <div class="row">
+                  <span id="date">
+                    <span id="depart-date">Departure Date:</span>{notification.departureDate}
+                  </span>
+                </div>
+              </div>
             </div>
-            <div class="row">
-              <span id="route">3234233</span>
-            </div>
-            <div class="row">
-              <span id="date">
-                <span id="depart-date">Departure Date:</span>30-2-2024
-              </span>
-            </div>
-          </div>
-          <div class="notification-list-item">
-            <div class="row">
-              <span id="flight-number">3234233</span>
-              <span id="flight-status">Delayed</span>
-            </div>
-            <div class="row">
-              <span id="route">3234233</span>
-            </div>
-            <div class="row">
-              <span id="date">
-                <span id="depart-date">Departure Date:</span>30-2-2024
-              </span>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </>

@@ -5,27 +5,43 @@ function Sidebar(props) {
 
 
     const getAllFlight = async () => {
-        const response = await fetch(`http://localhost:8080/flights?page=0`);
-        const flights = await response.json();
-        props.onFlightStatus({name: 'All Flight', flights});
+        try {
+            const response = await fetch(`http://localhost:8080/flights?page=0`);
+            const flights = await response.json();
+            props.onFlightStatus({name: 'All Flight', flights});
+        } catch(err) {
+            console.log(err);
+        }
     }
 
     const getDelayedFlight = async () => {
-        const response = await fetch(`http://localhost:8080/flights/delayed?page=0`);
-        const flights = await response.json();
-        props.onFlightStatus({name: 'Delayed Flight', flights});
+        try {
+            const response = await fetch(`http://localhost:8080/flights/delayed?page=0`);
+            const flights = await response.json();
+            props.onFlightStatus({name: 'Delayed Flight', flights});
+        } catch(err) {
+            console.log(err);
+        }
     }
 
     const getCancelledFlight = async () => {
-        const response = await fetch(`http://localhost:8080/flights/cancelled?page=0`);
-        const flights = await response.json();
-        props.onFlightStatus({name: 'Cancelled Flight', flights});
+        try {
+            const response = await fetch(`http://localhost:8080/flights/cancelled?page=0`);
+            const flights = await response.json();
+            props.onFlightStatus({name: 'Cancelled Flight', flights});
+        } catch(err) {
+            console.log(err)
+        }
     }
 
     const getOnTimeFlight = async () => {
-        const response = await fetch(`http://localhost:8080/flights/onTime?page=0`);
-        const flights = await response.json();
-        props.onFlightStatus({name: 'On Time Flight', flights});
+        try {
+            const response = await fetch(`http://localhost:8080/flights/onTime?page=0`);
+            const flights = await response.json();
+            props.onFlightStatus({name: 'On Time Flight', flights});
+        } catch(err) {
+            console.log(err)
+        }
     }
 
   return (
