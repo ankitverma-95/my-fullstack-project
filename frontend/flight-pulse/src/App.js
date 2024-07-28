@@ -12,7 +12,7 @@ import { Icon, divIcon, point } from "leaflet";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import CircleNotificationsIcon from "@mui/icons-material/CircleNotifications";
+import indigo from "./indigo.png";
 
 function App() {
   const [status, setStatus] = useState("");
@@ -68,7 +68,10 @@ function App() {
     flights.forEach((flight) => {
       list.push({
         geocode: [flight.currentlatitude, flight.currentlongitude],
-        popUp: flight.flightNumber,
+        flightNumber: flight.flightNumber,
+        destination: flight.destination,
+        arrival: flight.arrival,
+        status: flight.status
       });
     });
     setMarkers(list);
@@ -124,7 +127,28 @@ function App() {
               > */}
               {markers.map((marker) => (
                 <Marker position={marker.geocode} icon={customIcon}>
-                  <Popup>{marker.popUp}</Popup>
+                  <Popup>
+                    <div id="popup">
+                       <div id="pop-img-cntr">
+                          <img src={indigo} />
+                       </div>
+                       <div>
+                          <span id="pop-desc">
+                            <strong>Flight No.</strong>
+                          {marker.flightNumber}
+                          </span>
+                          <span> <strong>Destination:</strong>
+                            {marker.destination}
+                          </span>
+                          <span> <strong>Arrival:</strong>
+                            {marker.arrival}
+                          </span>
+                          <span> <strong>Status:</strong>
+                            {marker.status}
+                          </span>
+                       </div>
+                    </div>
+                  </Popup>
                 </Marker>
               ))}
               {/* </MarkerClusterGroup> */}

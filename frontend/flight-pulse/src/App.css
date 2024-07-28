@@ -84,6 +84,20 @@
   position: relative;
 }
 
+#popup {
+  display: flex;
+  gap: 8px;
+}
+
+#popup span {
+  display: block;
+}
+
+#pop-img-cntr img {
+  height: 40px;
+  width: 40px;
+}
+
 #notification-icon {
   font-size: 28px;
 }
