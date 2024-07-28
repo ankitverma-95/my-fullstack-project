@@ -22,4 +22,22 @@ public class FlightServiceImpl implements FlightStatusService {
         Pageable paging = (Pageable) PageRequest.of(pageNo, 10);
         return flightStatusRepository.findAll(paging).getContent();
     }
+
+    @Override
+    public List<FlightStatus> getDelayedFlights(int pageNo) {
+        Pageable paging = (Pageable) PageRequest.of(pageNo, 10);
+        return flightStatusRepository.findByStatus("Delayed", paging).getContent();
+    }
+
+    @Override
+    public List<FlightStatus> getCancelledFlights(int pageNo) {
+        Pageable paging = (Pageable) PageRequest.of(pageNo, 10);
+        return flightStatusRepository.findByStatus("Cancelled", paging).getContent();
+    }
+
+    @Override
+    public List<FlightStatus> getOnTimeFlights(int pageNo) {
+        Pageable paging = (Pageable) PageRequest.of(pageNo, 10);
+        return flightStatusRepository.findByStatus("On Time", paging).getContent();
+    }
 }

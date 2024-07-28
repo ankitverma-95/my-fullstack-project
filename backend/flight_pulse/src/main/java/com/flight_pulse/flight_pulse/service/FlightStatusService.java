@@ -9,4 +9,9 @@ import java.util.List;
 public interface FlightStatusService {
 
     List<FlightStatus> getAllFlights(int pageNo);
+
+    List<FlightStatus> getDelayedFlights(int pageNo);
+    List<FlightStatus> getCancelledFlights(int pageNo);
+
+    List<FlightStatus> getOnTimeFlights(int pageNo);
 }

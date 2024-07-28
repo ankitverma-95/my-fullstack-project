@@ -37,6 +37,29 @@ public class FlightStatusController {
         this.currentFlightStatus = flightStatusService.getAllFlights(page);
         return currentFlightStatus;
     }
+    @GetMapping("/delayed")
+    public List<FlightStatus> getDelayedFlightStatus(@RequestParam(defaultValue = "0") int page) {
+        if(currentFlightStatus != null) {
+            currentFlightStatus.clear();
+        }
+        return flightStatusService.getDelayedFlights(page);
+    }
+
+    @GetMapping("/cancelled")
+    public List<FlightStatus> getCancelledFlightStatus(@RequestParam(defaultValue = "0") int page) {
+        if(currentFlightStatus != null) {
+            currentFlightStatus.clear();
+        }
+        return flightStatusService.getCancelledFlights(page);
+    }
+
+    @GetMapping("/onTime")
+    public List<FlightStatus> getOnTimeFlightStatus(@RequestParam(defaultValue = "0") int page) {
+        if(currentFlightStatus != null) {
+            currentFlightStatus.clear();
+        }
+        return flightStatusService.getOnTimeFlights(page);
+    }
 
     @Scheduled(fixedDelay = 6000)
     private void sendNotificationToUsers() throws InterruptedException {
