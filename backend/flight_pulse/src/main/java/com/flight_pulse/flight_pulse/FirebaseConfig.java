@@ -15,15 +15,15 @@ public class FirebaseConfig {
 
     @Bean
     public FirebaseMessaging firebaseMessaging() throws IOException {
-            FileInputStream serviceAccount =
-                    new FileInputStream("./src/main/resources/serviceAccountKey.json");
-            // serviceAccountKey.json file containing the key, store this json file to your resource folder
+        FileInputStream serviceAccount =
+                new FileInputStream("./src/main/resources/serviceAccountKey.json");
+        // serviceAccountKey.json file containing the key, store this json file to your resource folder
+        // serviceAccountKey.json should be present in resources folder
+        FirebaseOptions options = new FirebaseOptions.Builder()
+                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                .build();
 
-            FirebaseOptions options = new FirebaseOptions.Builder()
-                    .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                    .build();
-
-            FirebaseApp app = FirebaseApp.initializeApp(options);
-            return FirebaseMessaging.getInstance(app);
+        FirebaseApp app = FirebaseApp.initializeApp(options);
+        return FirebaseMessaging.getInstance(app);
     }
 }
