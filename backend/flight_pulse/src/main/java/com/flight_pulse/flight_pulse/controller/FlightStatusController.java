@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -30,7 +31,9 @@ public class FlightStatusController {
     @Autowired
     FirebaseMessagingService messagingService;
 
-    private List<FlightStatus> currentFlightStatus;
+    private int i = 0;
+
+    private List<FlightStatus> currentFlightStatus = new ArrayList<>();
 
     @GetMapping
     public List<FlightStatus> getAllFlightStatus(@RequestParam(defaultValue = "0") int page) {
@@ -39,41 +42,30 @@ public class FlightStatusController {
     }
     @GetMapping("/delayed")
     public List<FlightStatus> getDelayedFlightStatus(@RequestParam(defaultValue = "0") int page) {
-        if(currentFlightStatus != null) {
-            currentFlightStatus.clear();
-        }
-        return flightStatusService.getDelayedFlights(page);
+        List<FlightStatus> delayedFlights = flightStatusService.getDelayedFlights(page);
+        return delayedFlights;
     }
 
     @GetMapping("/cancelled")
     public List<FlightStatus> getCancelledFlightStatus(@RequestParam(defaultValue = "0") int page) {
-        if(currentFlightStatus != null) {
-            currentFlightStatus.clear();
-        }
         return flightStatusService.getCancelledFlights(page);
     }
 
     @GetMapping("/onTime")
     public List<FlightStatus> getOnTimeFlightStatus(@RequestParam(defaultValue = "0") int page) {
-        if(currentFlightStatus != null) {
-            currentFlightStatus.clear();
-        }
         return flightStatusService.getOnTimeFlights(page);
     }
 
-    @Scheduled(fixedDelay = 6000)
+    @Scheduled(fixedDelay = 5000)
     private void sendNotificationToUsers() throws InterruptedException {
         List<FCMToken> allFCMToken = fcmTokenService.getAllFCMToken();
         if (currentFlightStatus != null &&!currentFlightStatus.isEmpty()) {
             List<FlightStatus> list = currentFlightStatus.stream().filter(flightStatus -> !flightStatus.getStatus().equals("On Time")).toList();
             if (list != null && !list.isEmpty() && !allFCMToken.isEmpty()) {
-                for (int i = 0; i < list.size(); i++) {
-                    NotificationMessage notificationMessage = getNotificationMessage(list, i, allFCMToken);
-
+                    NotificationMessage notificationMessage = getNotificationMessage(list, this.i, allFCMToken);
                     messagingService.sendNotificationByToken(notificationMessage);
-                }
+                    i++;
             }
-//        TimeUnit.SECONDS.sleep(5);
         }
         System.out.println("Scheduling at fixedDelay : " + LocalTime.now());
     }
@@ -90,7 +82,7 @@ public class FlightStatusController {
         body.put("origin", flightStatus.getOrigin());
         body.put("destination", flightStatus.getDestination());
         notificationMessage.setData(body);
-        notificationMessage.setRecipientToken(allFCMToken.get(i).getToken());
+        notificationMessage.setRecipientToken(allFCMToken.get(0).getToken());
         return notificationMessage;
     }
 

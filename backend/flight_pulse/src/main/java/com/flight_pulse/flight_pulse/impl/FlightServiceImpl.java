@@ -19,25 +19,25 @@ public class FlightServiceImpl implements FlightStatusService {
 
     @Override
     public List<FlightStatus> getAllFlights(int pageNo) {
-        Pageable paging = (Pageable) PageRequest.of(pageNo, 10);
+        Pageable paging = (Pageable) PageRequest.of(pageNo, 60);
         return flightStatusRepository.findAll(paging).getContent();
     }
 
     @Override
     public List<FlightStatus> getDelayedFlights(int pageNo) {
-        Pageable paging = (Pageable) PageRequest.of(pageNo, 10);
+        Pageable paging = (Pageable) PageRequest.of(pageNo, 60);
         return flightStatusRepository.findByStatus("Delayed", paging).getContent();
     }
 
     @Override
     public List<FlightStatus> getCancelledFlights(int pageNo) {
-        Pageable paging = (Pageable) PageRequest.of(pageNo, 10);
+        Pageable paging = (Pageable) PageRequest.of(pageNo, 60);
         return flightStatusRepository.findByStatus("Cancelled", paging).getContent();
     }
 
     @Override
     public List<FlightStatus> getOnTimeFlights(int pageNo) {
-        Pageable paging = (Pageable) PageRequest.of(pageNo, 10);
+        Pageable paging = (Pageable) PageRequest.of(pageNo, 60);
         return flightStatusRepository.findByStatus("On Time", paging).getContent();
     }
 }

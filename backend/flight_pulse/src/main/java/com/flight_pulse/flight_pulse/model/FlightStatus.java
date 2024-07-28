@@ -7,7 +7,10 @@ import java.time.LocalDateTime;
 
 @Document(collection = "flightStatus")
 public class FlightStatus {
+
     @Id
+    private String id;
+
     private String flightNumber;
 
     private String departure;
@@ -22,6 +25,14 @@ public class FlightStatus {
 
     private Double currentlatitude;
     private String status;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getFlightNumber() {
         return flightNumber;

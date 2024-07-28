@@ -21,6 +21,7 @@ public class FirebaseMessagingServiceImpl implements FirebaseMessagingService {
                 .setNotification(Notification.builder()
                         .setTitle(notificationMessage.getTitle())
                         .setBody(notificationMessage.getBody())
+                        .setImage("https://res.cloudinary.com/wego/f_auto,fl_lossy,w_1000,q_auto/v1480072078/flights/airlines_square/6E")
                         .build())
                 .setToken(notificationMessage.getRecipientToken())
                 .putAllData(notificationMessage.getData())
