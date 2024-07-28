@@ -1,0 +1,21 @@
+.sidebar-section {
+    width: 300px;
+    background: #FAFAFA;
+    border-right: 1px solid #f1d4d4;
+}
+
+  
+.list-item {
+    padding: 20px 40px;
+    margin-top: 16px;
+    cursor: pointer;
+}
+
+.list-item:hover {
+    background: ghostwhite;
+}
+
+a {
+    list-style: none;
+    text-decoration: none;
+}

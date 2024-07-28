@@ -1,38 +1,146 @@
-.App {
-  text-align: center;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+#root {
+  height: 100vh;
+  font-family: sans-serif;
+  color: #333;
+  display: flex;
+  flex-direction: column;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+#section-container {
+  display: flex;
+  flex: 1;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.sidebar-section {
+  width: 300px;
+}
+
+.map-section {
+  display: flex;
+  flex:1;
+  /* background-color: #f3e4d7;  */
+}
+
+.map-container {
+  flex:1;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 20px 40px; 
+  z-index: 0;
+}
+
+#flight-status-heading {
+  font-size: 24px;
+  color: #000;
+  font-family: system-ui;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.leaflet-container {
+  border-radius: 1rem;
+  flex: 1;
+  width: 100%;
+}
+
+#notification-section {
+  width: auto;
+  align-content: end;
+}
+/* height of the container */
+
+.cluster-icon {
+  background-color: #333;
+  height: 2em;
+  width: 2em;
+  color: #fff;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  border-radius: 50%;
+  font-size: 1.2rem;
+  box-shadow: 0 0 0px 5px #fff;
+}
+
+#notification-icon-container {
+  height: 60px;
+  width: 60px;
+  background: lightgray;
   color: white;
+  border-radius: 100%;
+  margin-bottom: 24px;
+  margin-right: 23px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
 }
 
-.App-link {
-  color: #61dafb;
+#notification-icon {
+  font-size: 28px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+
+#hide {
+  display: none;
+}
+
+#notification-list {
+  position: absolute;
+  top: 49%;
+  right: 57px;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 8px;
+  height: 300px;
+}
+
+.notification-list-item {
+  padding: 8px 16px;
+  background: #f5f5f5;
+  border-radius: 10px;
+  width: 300px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#flight-number {
+  color: #000;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+#flight-status {
+  color: red;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+#route {
+  font-size: 12px;
+}
+
+#date {
+  font-size: 12px;
+}
+
+#depart-date {
+  color: #000;
+  font-weight: 500;
+  /* font-size: 14px; */
+  margin-right: 8px;
 }
