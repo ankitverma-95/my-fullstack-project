@@ -3,11 +3,11 @@
 This system provides real-time flight status updates and notifications to passengers. It features a web application developed with React.js for the frontend, a backend built with Java, MongoDB for data storage, and Firebase Cloud Messaging for sending notifications. Additionally, Leaflet is used to display flight maps.
 
 ## Features
-a. Real-time Updates: Display current flight status (delays, cancellations, gate
+- Real-time Updates: Display current flight status (delays, cancellations, gate
 changes).
-b. Push Notifications: Send notifications for flight status changes via SMS, email, or
+- Push Notifications: Send notifications for flight status changes via SMS, email, or
 app notifications you can use kafka, RabbitMQ , etc.
-c. Integration with Airport Systems: Pull data from airport databases for accurate 
+- Integration with Airport Systems: Pull data from airport databases for accurate 
 information.
 
 ## Tech Stack
