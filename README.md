@@ -5,8 +5,7 @@ This system provides real-time flight status updates and notifications to passen
 ## Features
 - Real-time Updates: Display current flight status (delays, cancellations, gate
 changes).
-- Push Notifications: Send notifications for flight status changes via SMS, email, or
-app notifications you can use kafka, RabbitMQ , etc.
+- Push Notifications: Send notifications for flight status changes.
 - Integration with Airport Systems: Pull data from airport databases for accurate 
 information.
 
