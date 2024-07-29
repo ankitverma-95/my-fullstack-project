@@ -11,7 +11,7 @@ information.
 
 ## Tech Stack
 - Frontend: React.js
-- Backend: Java
+- Backend: Java with Spring Boot
 - Database: MongoDB
 - Notifications: Firebase Cloud Messaging
 - Maps: Leaflet
