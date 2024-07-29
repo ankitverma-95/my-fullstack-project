@@ -3,14 +3,14 @@ import { initializeApp } from "firebase/app";
 import { deleteToken, getMessaging, getToken } from "firebase/messaging";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDZKPNQrq504C23IiFJmEil__Q-m4OjY7U",
-  authDomain: "cloud-messaging-5c20a.firebaseapp.com",
-  projectId: "cloud-messaging-5c20a",
-  storageBucket: "cloud-messaging-5c20a.appspot.com",
-  messagingSenderId: "490626908557",
-  appId: "1:490626908557:web:2753b4b17c06bb2eabfdc4",
-  measurementId: "G-TB1GNGBJZ9"
-};
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_AUTH_DOMAIN",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_STORAGE_BUCKET",
+    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+    appId: "YOUR_APP_ID",
+    measurementId: "YOUR_MEASUREMENT_ID"
+  };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
