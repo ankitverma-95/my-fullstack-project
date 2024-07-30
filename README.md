@@ -157,6 +157,7 @@ The flight status updates are stored in MongoDB with the following schema:
 
 
 ## Demo
-Check out the demo video to see the system in action: [Demo Video]([https://www.example.com/demo](https://drive.google.com/file/d/11-9Od9C2OAJVVl1ORFSOpBRCOPexha1G/view?usp=sharing))
+
+[Demo video](https://drive.google.com/file/d/11-9Od9C2OAJVVl1ORFSOpBRCOPexha1G/view?usp=sharing)
 
 
