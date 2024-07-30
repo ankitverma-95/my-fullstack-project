@@ -25,7 +25,7 @@ information.
 ## Data Model Schema
 The flight status updates are stored in MongoDB with the following schema:
 
-json
+```json
 {
   "flightNumber": "string",
   "departure": "string",
@@ -36,6 +36,7 @@ json
   "currentLongitude": "number",
   "status": "string"
 }
+```
 
 
 ## Setup
