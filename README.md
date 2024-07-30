@@ -22,6 +22,22 @@ information.
 - MongoDB
 - Firebase account
 
+## Data Model Schema
+The flight status updates are stored in MongoDB with the following schema:
+
+json
+{
+  "flightNumber": "string",
+  "departure": "string",
+  "arrival": "string",
+  "origin": "string",
+  "destination": "string",
+  "currentLatitude": "number",
+  "currentLongitude": "number",
+  "status": "string"
+}
+
+
 ## Setup
 
 ### Frontend (React.js)
@@ -54,12 +70,22 @@ information.
     ```
 
 ### Database (MongoDB)
-1. Install MongoDB and start the MongoDB server:
-    ```sh
-    mongod
-    ```
+#### Install MongoDB
+1. Download MongoDB from the [official MongoDB website](https://www.mongodb.com/try/download/community).
+2. Follow the installation instructions for your operating system.
+3. Ensure MongoDB is running on the default port (27017).
 
-2. Ensure MongoDB is running on the default port (27017).
+#### Start MongoDB Server
+1. Open a terminal and run the following command to start the MongoDB server:
+    ```sh
+    mongod --dbpath /path/to/your/db
+    ```
+    Replace `/path/to/your/db` with the actual path where you want MongoDB to store its data.
+
+#### Install MongoDB Compass (optional)
+1. Download MongoDB Compass from the [official MongoDB Compass website](https://www.mongodb.com/products/compass).
+2. Follow the installation instructions for your operating system.
+3. Open MongoDB Compass and connect to your MongoDB server (usually running on `mongodb://localhost:27017`).
 
 ### Firebase Configuration
 1. Create a Firebase project at the [Firebase Console](https://console.firebase.google.com/).
@@ -91,10 +117,33 @@ information.
     export { messaging };
     ```
 
-4. Configure Firebase in your Java backend:
+4. Configure Firebase in your Spring Boot backend:
    - Add the Firebase Admin SDK to your project dependencies.
    - Initialize Firebase Admin SDK:
-  
+    ```java
+    import com.google.firebase.FirebaseApp;
+    import com.google.firebase.FirebaseOptions;
+    import com.google.auth.oauth2.GoogleCredentials;
+
+    import java.io.FileInputStream;
+    import java.io.IOException;
+
+    public class FirebaseInitializer {
+
+        public void initialize() {
+            try (FileInputStream serviceAccount = new FileInputStream("path/to/serviceAccountKey.json")) {
+                FirebaseOptions options = FirebaseOptions.builder()
+                        .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                        .build();
+
+                FirebaseApp.initializeApp(options);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    ```
+
 5. Obtain the service account key file from your Firebase project and save it in resources directory in backend folder project .
 
 6. Ensure to check database name in application.property file in resources directory.
@@ -107,6 +156,6 @@ information.
 
 
 ## Demo
-Check out the demo video to see the system in action: [Demo Video](https://www.example.com/demo)
+Check out the demo video to see the system in action: [Demo Video]([https://www.example.com/demo](https://drive.google.com/file/d/11-9Od9C2OAJVVl1ORFSOpBRCOPexha1G/view?usp=sharing))
 
 
